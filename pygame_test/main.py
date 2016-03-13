@@ -3,7 +3,7 @@ from math import sqrt
 from heapq import heappop, heappush
 from grid import *
 from mob import *
-from random import random
+import random
  
 # Define some colors
 BLACK = (0, 0, 0)
@@ -48,6 +48,8 @@ clock = pygame.time.Clock()
 grid = make_grid_from_file("test.csv")
 
 path = []
+if (grid.start and grid.end):
+    path = get_shortest_path(grid.start[0], grid.end[0])
 mobs = []
 curr_cell = grid.get_cell(0,0)
 
@@ -64,11 +66,23 @@ while not done:
             row = pos[1] // (HEIGHT + MARGIN)
             # Set that location to zero
             grid.cycle_cell(row,column)
-            path = get_shortest_path(grid.get_cell(row,column), grid.get_cell(0,0))
+            start = grid.get_cell(row, column)
+            end = grid.get_cell(0,0)
+            if grid.start:
+                start = grid.start[0]
+            if grid.end:
+                end = grid.end[0]
+            path = get_shortest_path(start, end)
             curr_cell = grid.get_cell(row,column)
             print("Click ", pos, "Grid coordinates: ", row, column)
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-        	m = Mob(curr_cell, RED, path, random() + .5)
+            mob_start = curr_cell
+            mob_path = path
+            if grid.start and grid.end:
+                mob_start = random.choice(grid.start)
+                mob_end = random.choice(grid.end)
+                mob_path = get_shortest_path(mob_start, mob_end)
+        	m = Mob(mob_start, RED, mob_path, random.random() + .5)
         	mobs.append(m)
 
     mobs = [m for m in mobs if m.move()]

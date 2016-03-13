@@ -55,6 +55,8 @@ class Grid:
         self.y = y
         self.w = w
         self.h = h
+        self.start = []
+        self.end = []
         self.cells = [[Cell(self, r,c,0) for c in range(w)] for r in range(h)]
 
     def draw_grid(self, screen):
@@ -117,6 +119,12 @@ def make_grid_from_file(filename):
     grid = Grid(0,0,w,h)
     for r,col in enumerate(results):
         for c,val in enumerate(col):
+            if val == 'S':
+                grid.start.append(grid.get_cell(r,c))
+                val = Cell.PATH
+            if val == 'E':
+                grid.end.append(grid.get_cell(r,c))
+                val = Cell.PATH
             grid.get_cell(r,c).v = int(val)
 
     return grid
