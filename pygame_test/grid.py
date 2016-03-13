@@ -11,6 +11,7 @@
 import pygame
 from math import sqrt
 from heapq import heappop, heappush
+import csv
 
 class Cell:
     # Heigh and Width of cells
@@ -19,6 +20,8 @@ class Cell:
     # Types
     EMPTY = 0
     PATH = 1
+    START = 2
+    END = 3
     def __init__(self, grid, r,c,v):
         self.r = r
         self.c = c
@@ -41,10 +44,11 @@ class Cell:
 class Grid:
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
-    GREEN = (0, 255, 0)
+    GREEN = (0, 166, 55)
+    BROWN = (222, 184, 135)
     RED = (255, 0, 0)
  
-    COLORS = [WHITE, GREEN]
+    COLORS = [GREEN, BROWN]
 
     def __init__(self, x,y,w,h):
         self.x = x
@@ -97,3 +101,23 @@ def get_shortest_path(start, dest):
         result.insert(0, curr)
         curr = prev[curr]
     return result
+
+def make_grid_from_file(filename):
+    results = []
+    with open (filename, 'rb') as file:
+        mapreader = csv.reader(file)
+        for row in mapreader:
+            results.append (row)
+        print results
+
+    h = len (results)
+    if results:
+        w = len(results[0])
+
+    grid = Grid(0,0,w,h)
+    for r,col in enumerate(results):
+        for c,val in enumerate(col):
+            grid.get_cell(r,c).v = int(val)
+
+    return grid
+

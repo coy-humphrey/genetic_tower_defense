@@ -45,7 +45,7 @@ done = False
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
  
-grid = Grid(0,0,25,25)
+grid = make_grid_from_file("test.csv")
 
 path = []
 mobs = []
