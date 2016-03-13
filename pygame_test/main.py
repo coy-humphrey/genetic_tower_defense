@@ -4,6 +4,7 @@ from heapq import heappop, heappush
 from grid import *
 from mob import *
 import random
+from tower import *
  
 # Define some colors
 BLACK = (0, 0, 0)
@@ -51,6 +52,7 @@ path = []
 if (grid.start and grid.end):
     path = get_shortest_path(grid.start[0], grid.end[0])
 mobs = []
+towers = []
 curr_cell = grid.get_cell(0,0)
 
 # -------- Main Program Loop -----------
@@ -64,16 +66,23 @@ while not done:
             # Change the x/y screen coordinates to grid coordinates
             column = pos[0] // (WIDTH + MARGIN)
             row = pos[1] // (HEIGHT + MARGIN)
-            # Set that location to zero
-            grid.cycle_cell(row,column)
-            start = grid.get_cell(row, column)
-            end = grid.get_cell(0,0)
-            if grid.start:
-                start = grid.start[0]
-            if grid.end:
-                end = grid.end[0]
-            path = get_shortest_path(start, end)
             curr_cell = grid.get_cell(row,column)
+
+            button = pygame.mouse.get_pressed()
+            if button[0]:
+                # Set that location to zero
+                grid.cycle_cell(row,column)
+                start = grid.get_cell(row, column)
+                end = grid.get_cell(0,0)
+                if grid.start:
+                    start = grid.start[0]
+                if grid.end:
+                    end = grid.end[0]
+                path = get_shortest_path(start, end)
+            else:
+                t = Tower(curr_cell, BLACK)
+                towers.append(t)
+            
             print("Click ", pos, "Grid coordinates: ", row, column)
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             mob_start = curr_cell
@@ -82,10 +91,12 @@ while not done:
                 mob_start = random.choice(grid.start)
                 mob_end = random.choice(grid.end)
                 mob_path = get_shortest_path(mob_start, mob_end)
-        	m = Mob(mob_start, RED, mob_path, random.random() + .5)
-        	mobs.append(m)
+            m = Mob(mob_start, RED, mob_path, random.random() + .5)
+            mobs.append(m)
 
     mobs = [m for m in mobs if m.move()]
+    for m in mobs:
+        m.color = RED
 
  
     # Set the screen background
@@ -94,8 +105,14 @@ while not done:
     # Draw the grid
     grid.draw_grid(screen)
     draw_path(screen, path)
+
+    for t in towers:
+        for m in t.mobs_in_range(mobs):
+            m.color = (0,0,255)
+        t.draw(screen)
+
     for m in mobs:
-    	m.draw(screen)
+        m.draw(screen)
  
     # Limit to 60 frames per second
     clock.tick(60)
