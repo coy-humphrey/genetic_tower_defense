@@ -4,14 +4,15 @@ import numpy as np
 class Mob:
     RAD = 10
 
-    def __init__(self, start, color, path, speed=2):
+    def __init__(self, start, color, path, speed, HP):
         self.x, self.y = start.get_center()
         self.color = color
         self.path = [x.get_center() for x in path[1:]]
         self.curr_dest = self.path[0]
         self.speed = speed
         self.distance_traveled = 0
-        self.HP = 300
+        self.HP = HP
+
         print ("created mob")
 
     def move(self):

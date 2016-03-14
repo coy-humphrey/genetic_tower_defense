@@ -92,7 +92,7 @@ while not done:
                 mob_start = random.choice(grid.start)
                 mob_end = random.choice(grid.end)
                 mob_path = get_shortest_path(mob_start, mob_end)
-            m = Mob(mob_start, RED, mob_path, random.random() + .5)
+            m = Mob(mob_start, RED, mob_path, random.random() + .5, random.random() + 300)
             mobs.append(m)
 
     mobs = [m for m in mobs if m.move()]
