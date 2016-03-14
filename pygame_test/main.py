@@ -52,6 +52,8 @@ grid = make_grid_from_file("test.csv")
 path = []
 if (grid.start and grid.end):
     path = get_shortest_path(grid.start[0], grid.end[0])
+
+tower_type = 
 mobs = []
 towers = []
 curr_cell = grid.get_cell(0,0)
@@ -109,10 +111,7 @@ while not done:
     draw_path(screen, path)
 
     for t in towers:
-        if t.mobs_in_range(mobs):
-            target = max(t.mobs_in_range(mobs), key=attrgetter('distance_traveled'))
-            target.color = (0,0,255)
-            target.HP -= 3
+        t.attack(mobs)
         t.draw(screen)
 
     for m in mobs:
