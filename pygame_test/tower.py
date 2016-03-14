@@ -31,7 +31,7 @@ class Tower:
         self.aoe_range = 0
         self.radius = 100
         self.damage_type = Tower.NORMAL
-        self.delay = .5
+        self.delay = 500
         self.last_attacked = 0
         print ("created tower")
 
@@ -42,8 +42,8 @@ class Tower:
         else: return None
 
     def attack(self, moblist):
-        if time() - self.last_attacked < self.delay: return
-        self.last_attacked = time()
+        if pygame.time.get_ticks() - self.last_attacked < self.delay: return
+        self.last_attacked = pygame.time.get_ticks()
         target = self.get_target(moblist)
         if target == None: return
         self.deal_damage(target, moblist)
@@ -67,21 +67,23 @@ class Tower:
 
 class ArrowTower(Tower):
     def __init__(self, location, color):
+        Tower.__init__(self,location, color)
         self.x, self.y = location.get_center()
-        self.c = color
+        self.c = (0,0,0)
         self.damage = 10
         self.aoe_range = 0
         self.radius = 100
         self.damage_type = Tower.NORMAL
-        self.delay = .5
+        self.delay = 500
 
 class BombTower(Tower):
     def __init__(self, location, color):
+        Tower.__init__(self,location, color)
         self.x, self.y = location.get_center()
-        self.c = color
+        self.c = (0,255,255)
         self.damage = 5
         self.aoe_damage = 5
-        self.aoe_range = 10
+        self.aoe_range = 20
         self.radius = 70
         self.damage_type = Tower.NORMAL
-        self.delay = 1
+        self.delay = 1000

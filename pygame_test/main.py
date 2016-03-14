@@ -15,6 +15,8 @@ RED = (255, 0, 0)
  
 COLORS = [WHITE, GREEN, BLACK, RED]
 
+TOWERS = [Tower, ArrowTower, BombTower]
+
 # This sets the WIDTH and HEIGHT of each grid location
 WIDTH = 32
 HEIGHT = 32
@@ -53,7 +55,7 @@ path = []
 if (grid.start and grid.end):
     path = get_shortest_path(grid.start[0], grid.end[0])
 
-tower_type = 
+tower_type = 0
 mobs = []
 towers = []
 curr_cell = grid.get_cell(0,0)
@@ -83,7 +85,7 @@ while not done:
                     end = grid.end[0]
                 path = get_shortest_path(start, end)
             else:
-                t = Tower(curr_cell, BLACK)
+                t = TOWERS[tower_type](curr_cell, BLACK)
                 towers.append(t)
             
             print("Click ", pos, "Grid coordinates: ", row, column)
@@ -97,9 +99,12 @@ while not done:
             m = Mob(mob_start, RED, mob_path, random.random() + .5, random.random() + 300)
             mobs.append(m)
 
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_a:
+            tower_type = (tower_type + 1) % len(TOWERS)
+
     mobs = [m for m in mobs if m.move()]
-    for m in mobs:
-        m.color = RED
+    # for m in mobs:
+    #     m.color = RED
 
 
  
