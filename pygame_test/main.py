@@ -5,6 +5,7 @@ from grid import *
 from mob import *
 import random
 from tower import *
+from operator import *
  
 # Define some colors
 BLACK = (0, 0, 0)
@@ -98,6 +99,7 @@ while not done:
     for m in mobs:
         m.color = RED
 
+
  
     # Set the screen background
     screen.fill(BLACK)
@@ -107,12 +109,18 @@ while not done:
     draw_path(screen, path)
 
     for t in towers:
-        for m in t.mobs_in_range(mobs):
-            m.color = (0,0,255)
+        if t.mobs_in_range(mobs):
+            target = max(t.mobs_in_range(mobs), key=attrgetter('distance_traveled'))
+            target.color = (0,0,255)
+            target.HP -= 3gi
         t.draw(screen)
 
     for m in mobs:
-        m.draw(screen)
+        if m.HP == 0:
+            mobs.remove(m)
+        else:
+            m.draw(screen)
+
  
     # Limit to 60 frames per second
     clock.tick(60)

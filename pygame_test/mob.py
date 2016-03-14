@@ -3,6 +3,8 @@ import numpy as np
 
 class Mob:
     RAD = 10
+    distance_traveled = 0
+    HP = 300
 
     def __init__(self, start, color, path, speed=2):
         self.x, self.y = start.get_center()
@@ -22,12 +24,16 @@ class Mob:
 
         if a > self.x:
             self.x += min(self.speed, a - self.x)
+            Mob.distance_traveled += min(self.speed, a - self.x)
         elif a < self.x:
             self.x -= min(self.speed, self.x - a)
+            Mob.distance_traveled += min(self.speed, self.x - a)
         if b > self.y:
             self.y += min(self.speed, b - self.y)
+            Mob.distance_traveled += min(self.speed, b - self.y)
         elif b < self.y:
             self.y -= min(self.speed, self.y - b)
+            Mob.distance_traveled += min(self.speed, self.y - b)
         return 1
 
     def draw(self, screen):

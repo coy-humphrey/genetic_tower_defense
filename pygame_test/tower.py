@@ -18,7 +18,7 @@ class Tower:
 
 
     def draw(self, screen):
-        pygame.draw.circle(screen,Tower.RED,(int(self.x),int(self.y)), 100, 1)
+        pygame.draw.circle(screen, Tower.RED,(int(self.x),int(self.y)), 100, 1)
         pygame.draw.circle(screen, self.c, (int(self.x), int(self.y)), Tower.RAD)
 
     def mobs_in_range(self, mob_list):
