@@ -4,14 +4,17 @@ import numpy as np
 class Mob:
     RAD = 10
 
-    def __init__(self, start, color, path, speed, HP):
+    def __init__(self, start, color, path, statArray):
+        self.statArray = statArray
         self.x, self.y = start.get_center()
         self.color = color
         self.path = [x.get_center() for x in path[1:]]
         self.curr_dest = self.path[0]
-        self.speed = speed
         self.distance_traveled = 0
-        self.HP = HP
+        self.speed = statArray[0]
+        self.HP = statArray[1]
+        self.defense = statArray[2]
+        self.fireDefense = statArray[3]
 
         print ("created mob")
 

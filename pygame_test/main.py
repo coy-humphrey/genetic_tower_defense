@@ -53,9 +53,10 @@ path = []
 if (grid.start and grid.end):
     path = get_shortest_path(grid.start[0], grid.end[0])
 
-tower_type = 
+
 mobs = []
 towers = []
+breed = []
 curr_cell = grid.get_cell(0,0)
 
 # -------- Main Program Loop -----------
@@ -94,7 +95,8 @@ while not done:
                 mob_start = random.choice(grid.start)
                 mob_end = random.choice(grid.end)
                 mob_path = get_shortest_path(mob_start, mob_end)
-            m = Mob(mob_start, RED, mob_path, random.random() + .5, random.random() + 300)
+            statArray = [2, 100,5,5]
+            m = Mob(mob_start, RED, mob_path, statArray)
             mobs.append(m)
 
     mobs = [m for m in mobs if m.move()]
@@ -115,11 +117,16 @@ while not done:
         t.draw(screen)
 
     for m in mobs:
+        if not m.move():
+            breed.append(m)
         if m.HP <= 0:
-
+            breed.append(m)
             mobs.remove(m)
         else:
             m.draw(screen)
+
+
+
 
  
     # Limit to 60 frames per second
