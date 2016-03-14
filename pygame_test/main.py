@@ -117,6 +117,7 @@ while not done:
 
     for m in mobs:
         if m.HP <= 0:
+
             mobs.remove(m)
         else:
             m.draw(screen)
