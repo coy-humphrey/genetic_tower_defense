@@ -112,11 +112,11 @@ while not done:
         if t.mobs_in_range(mobs):
             target = max(t.mobs_in_range(mobs), key=attrgetter('distance_traveled'))
             target.color = (0,0,255)
-            target.HP -= 3gi
+            target.HP -= 3
         t.draw(screen)
 
     for m in mobs:
-        if m.HP == 0:
+        if m.HP <= 0:
             mobs.remove(m)
         else:
             m.draw(screen)
