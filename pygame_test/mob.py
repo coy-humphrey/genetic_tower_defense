@@ -33,8 +33,6 @@ class Mob:
         self.hp_bar = HealthBar(self)
         self.damage_indicators = []
 
-        print ("created mob")
-
     def move(self):
         if not self.curr_dest: return 0
         a,b = self.curr_dest

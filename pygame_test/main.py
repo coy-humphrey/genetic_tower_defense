@@ -68,7 +68,10 @@ towers = []
 breed = []
 curr_cell = grid.get_cell(0,0)
 info_panel = MobInfoPanel((800,0))
-wave = Wave(100,grid.start[0], path, breed)
+wave = Wave(30,grid.start[0], path, breed)
+wave_done = False
+timer = 0
+wave_delay = 2000
 
 # -------- Main Program Loop -----------
 while not done:
@@ -112,6 +115,20 @@ while not done:
 
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_a:
             tower_type = (tower_type + 1) % len(TOWERS)
+
+
+    if wave.is_done() and not wave_done:
+        print ("wave done")
+        wave_done = True
+
+    if wave_done:
+        if not mobs:
+            print ("next wave")
+            wave = wave = Wave(30,grid.start[0], path, breed)
+            wave_done = False
+
+
+
 
     wave.step(mobs)
 
