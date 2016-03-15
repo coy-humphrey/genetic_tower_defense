@@ -18,3 +18,24 @@ def fitness(m):
 
 def get_n_winners(breedlist, n):
 	sorted(breedlist, key=fitness, reverse=True)[:n]
+
+def get_n_crossovers(parents, n, mob_start, mob_path):
+	if not parents: return
+	results = []
+	for i in range(n):
+		p1 = random.choice(parents)
+		p2 = random.choice(parents)
+		new_stats = crossover (p1.statArray, p2.statArray)
+		results.append(Mob(mob_start, (255,0,0), mob_path, new_stats))
+
+	return results
+
+def get_n_mutants(parents, n, mob_start, mob_path):
+	if not parents: return
+	results = []
+	for i in range(n):
+		p = random.choice(parents)
+		new_stats = mutate(p.statArray)
+		results.append(Mob(mob_start, (255,0,0), mob_path, new_stats))
+
+	return results
