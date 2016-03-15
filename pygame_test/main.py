@@ -70,8 +70,13 @@ curr_cell = grid.get_cell(0,0)
 info_panel = MobInfoPanel((800,0))
 wave = Wave(30,grid.start[0], path, breed)
 wave_done = False
-timer = 0
+timer = pygame.time.get_ticks()
 wave_delay = 2000
+wave_delayed = True
+
+num_survived = 0
+num_survived_new = 0
+font = pygame.font.SysFont("monospace", 16)
 
 # -------- Main Program Loop -----------
 while not done:
@@ -124,13 +129,16 @@ while not done:
     if wave_done:
         if not mobs:
             print ("next wave")
-            wave = wave = Wave(30,grid.start[0], path, breed)
+            wave = Wave(30,grid.start[0], path, breed)
+            num_survived = num_survived_new
+            num_survived_new = 0
+            info_panel.update(breed)
+            breed = []
             wave_done = False
 
-
-
-
-    wave.step(mobs)
+    if not wave_delayed or pygame.time.get_ticks() - timer > wave_delay:
+        wave_delayed = False
+        wave.step(mobs)
 
     # Set the screen background
     screen.fill(BLACK)
@@ -146,13 +154,20 @@ while not done:
     for m in mobs:
         if not m.move() or m.is_dead():
             breed.append(m)
-            breed.sort(key=lambda m: m.distance_traveled, reverse = True)
+            breed.sort(key=genetics.fitness, reverse = True)
             mobs.remove(m)
-            info_panel.update(breed)
+            if not m.is_dead():
+                num_survived_new += 1
         else:
             m.draw(screen)
 
     info_panel.draw(screen)
+
+    survivor_str = "Survivors Last Round: " + str(num_survived)
+    label = font.render(survivor_str, 1, BLACK)
+    location = (250, 30)
+    screen.blit(label, location)
+
 
     # Limit to 60 frames per second
     clock.tick(60)

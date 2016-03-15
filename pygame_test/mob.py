@@ -28,10 +28,14 @@ class Mob:
 
         self.statsFromArray()
 
+        # self.speed = 2
+
         self.max_health = self.hp
         
         self.hp_bar = HealthBar(self)
         self.damage_indicators = []
+
+        self.attacked = 0
 
     def move(self):
         if not self.curr_dest: return 0
@@ -69,11 +73,15 @@ class Mob:
     def get_hurt(self, damage, type):
         if type == 0:
             damage -= self.defense
+        if type == 1:
+            damage -= self.magicDefense
         if type == 2:
             damage -= self.fireDefense
 
+        damage = max (damage, 0)
         self.hp -= damage
         self.damage_indicators.append(DamageIndicator(damage))
+        self.attacked += 1
 
     def is_dead(self):
         return self.hp <= 0
@@ -81,7 +89,7 @@ class Mob:
     def statsFromArray(self):
         a = self.statArray
         self.speed = 1 + 5 * a[Mob.SPEED]
-        self.hp = 5 + 10 * a[Mob.HP]
-        self.defense = 5 * a[Mob.DEFENSE]
-        self.fireDefense = 5 * a[Mob.FIREDEFENSE]
-        self.magicDefense = 5 * a[Mob.MAGICDEFENSE]
+        self.hp = 5 + 20 * a[Mob.HP]
+        self.defense = 15 * a[Mob.DEFENSE]
+        self.fireDefense = 15 * a[Mob.FIREDEFENSE]
+        self.magicDefense = 15 * a[Mob.MAGICDEFENSE]

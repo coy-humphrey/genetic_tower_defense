@@ -72,9 +72,9 @@ class ArrowTower(Tower):
         Tower.__init__(self,location, color)
         self.x, self.y = location.get_center()
         self.c = (0,0,0)
-        self.damage = 10
+        self.damage = 8
         self.aoe_range = 0
-        self.radius = 100
+        self.radius = 90
         self.damage_type = Tower.NORMAL
         self.delay = 500
 
@@ -95,9 +95,9 @@ class FireTower(Tower):
         Tower.__init__(self,location, color)
         self.x, self.y = location.get_center()
         self.c = (255,0,100)
-        self.damage = 10
+        self.damage = 8
         self.aoe_damage = 5
-        self.aoe_range = 20
+        self.aoe_range = 0
         self.radius = 90
         self.damage_type = Tower.FIRE
-        self.delay = 1500
+        self.delay = 500
