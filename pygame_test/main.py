@@ -15,7 +15,7 @@ RED = (255, 0, 0)
  
 COLORS = [WHITE, GREEN, BLACK, RED]
 
-TOWERS = [Tower, ArrowTower, BombTower]
+TOWERS = [Tower, ArrowTower, BombTower, FireTower]
 
 # This sets the WIDTH and HEIGHT of each grid location
 WIDTH = 32

@@ -83,7 +83,19 @@ class BombTower(Tower):
         self.c = (0,255,255)
         self.damage = 5
         self.aoe_damage = 5
-        self.aoe_range = 20
+        self.aoe_range = 30
         self.radius = 70
         self.damage_type = Tower.NORMAL
         self.delay = 1000
+
+class FireTower(Tower):
+    def __init__(self, location, color):
+        Tower.__init__(self,location, color)
+        self.x, self.y = location.get_center()
+        self.c = (255,0,100)
+        self.damage = 10
+        self.aoe_damage = 5
+        self.aoe_range = 20
+        self.radius = 90
+        self.damage_type = Tower.FIRE
+        self.delay = 1500
