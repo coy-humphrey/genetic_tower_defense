@@ -31,7 +31,7 @@ class Tower:
         self.aoe_range = 0
         self.radius = 100
         self.damage_type = Tower.NORMAL
-        self.delay = .5
+        self.delay = 500
         self.last_attacked = 0
         print ("created tower")
 
@@ -42,10 +42,10 @@ class Tower:
         else: return None
 
     def attack(self, moblist):
-        if time() - self.last_attacked < self.delay: return
-        self.last_attacked = time()
+        if pygame.time.get_ticks() - self.last_attacked < self.delay: return
         target = self.get_target(moblist)
         if target == None: return
+        self.last_attacked = pygame.time.get_ticks()
         self.deal_damage(target, moblist)
 
     def deal_damage(self, target, moblist):
@@ -53,10 +53,12 @@ class Tower:
         splash_mobs = mobs_in_area((target.x,target.y), self.aoe_range, moblist)
         if target in splash_mobs: splash_mobs.remove(target)
         self.deal_aoe_damage (splash_mobs)
+        target.get_hurt(self.damage, self.damage_type)
 
     def deal_aoe_damage(self, mobs):
         for m in mobs:
             m.color = (255,0,255)
+            m.get_hurt(self.aoe_damage, self.damage_type)
 
     def draw(self, screen):
         pygame.draw.circle(screen, Tower.RED,(int(self.x),int(self.y)), self.radius, 1)
@@ -67,21 +69,35 @@ class Tower:
 
 class ArrowTower(Tower):
     def __init__(self, location, color):
+        Tower.__init__(self,location, color)
         self.x, self.y = location.get_center()
-        self.c = color
+        self.c = (0,0,0)
         self.damage = 10
         self.aoe_range = 0
         self.radius = 100
         self.damage_type = Tower.NORMAL
-        self.delay = .5
+        self.delay = 500
 
 class BombTower(Tower):
     def __init__(self, location, color):
+        Tower.__init__(self,location, color)
         self.x, self.y = location.get_center()
-        self.c = color
+        self.c = (0,255,255)
         self.damage = 5
         self.aoe_damage = 5
-        self.aoe_range = 10
+        self.aoe_range = 30
         self.radius = 70
         self.damage_type = Tower.NORMAL
-        self.delay = 1
+        self.delay = 1000
+
+class FireTower(Tower):
+    def __init__(self, location, color):
+        Tower.__init__(self,location, color)
+        self.x, self.y = location.get_center()
+        self.c = (255,0,100)
+        self.damage = 10
+        self.aoe_damage = 5
+        self.aoe_range = 20
+        self.radius = 90
+        self.damage_type = Tower.FIRE
+        self.delay = 1500

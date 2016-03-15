@@ -6,6 +6,7 @@ from mob import *
 import random
 from tower import *
 from operator import *
+from mob_display import *
  
 # Define some colors
 BLACK = (0, 0, 0)
@@ -14,6 +15,8 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
  
 COLORS = [WHITE, GREEN, BLACK, RED]
+
+TOWERS = [Tower, ArrowTower, BombTower, FireTower]
 
 # This sets the WIDTH and HEIGHT of each grid location
 WIDTH = 32
@@ -35,7 +38,7 @@ def draw_path(screen, path):
 pygame.init()
  
 # Set the HEIGHT and WIDTH of the screen
-WINDOW_SIZE = [800, 800]
+WINDOW_SIZE = [890, 800]
 screen = pygame.display.set_mode(WINDOW_SIZE)
  
 # Set title of screen
@@ -53,6 +56,7 @@ path = []
 if (grid.start and grid.end):
     path = get_shortest_path(grid.start[0], grid.end[0])
 
+tower_type = 0
 
 mobs = []
 towers = []
@@ -84,7 +88,7 @@ while not done:
                     end = grid.end[0]
                 path = get_shortest_path(start, end)
             else:
-                t = Tower(curr_cell, BLACK)
+                t = TOWERS[tower_type](curr_cell, BLACK)
                 towers.append(t)
             
             print("Click ", pos, "Grid coordinates: ", row, column)
@@ -95,15 +99,12 @@ while not done:
                 mob_start = random.choice(grid.start)
                 mob_end = random.choice(grid.end)
                 mob_path = get_shortest_path(mob_start, mob_end)
-            statArray = [2, 100,5,5]
+            statArray = [2, 10, 5, 5]
             m = Mob(mob_start, RED, mob_path, statArray)
             mobs.append(m)
 
-    mobs = [m for m in mobs if m.move()]
-    for m in mobs:
-        m.color = RED
-
-
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_a:
+            tower_type = (tower_type + 1) % len(TOWERS)
  
     # Set the screen background
     screen.fill(BLACK)
@@ -119,16 +120,17 @@ while not done:
     for m in mobs:
         if not m.move():
             breed.append(m)
+            mobs.remove(m)
         if m.HP <= 0:
             breed.append(m)
             mobs.remove(m)
         else:
             m.draw(screen)
 
+    for i in range(10):
+        mi = MobInfo((800, i * 80), [], RED)
+        mi.draw(screen)
 
-
-
- 
     # Limit to 60 frames per second
     clock.tick(60)
  
