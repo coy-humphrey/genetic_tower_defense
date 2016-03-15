@@ -69,6 +69,11 @@ class Mob:
         self.damage_indicators = [d for d in self.damage_indicators if d.draw(screen, self)]
 
     def get_hurt(self, damage, type):
+        if type == 0:
+            damage -= self.defense
+        if type == 2:
+            damage -= self.fireDefense
+
         self.hp -= damage
         self.damage_indicators.append(DamageIndicator(damage))
 

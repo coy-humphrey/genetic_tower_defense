@@ -26,7 +26,7 @@ class Tower:
     def __init__(self, location, color):
         self.x, self.y = location.get_center()
         self.c = color
-        self.damage = 0
+        self.damage = 10
         self.aoe_damage = 0
         self.aoe_range = 0
         self.radius = 100
