@@ -7,7 +7,11 @@ import random
 from tower import *
 from operator import *
 from mob_display import *
+import bisect
  
+# Some code borrowed from:
+# http://programarcadegames.com/index.php?chapter=array_backed_grids
+
 # Define some colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -119,12 +123,9 @@ while not done:
         t.draw(screen)
 
     for m in mobs:
-        if not m.move():
+        if not m.move() or m.HP <= 0:
             breed.append(m)
-            mobs.remove(m)
-            info_panel.update(breed)
-        if m.HP <= 0:
-            breed.append(m)
+            breed.sort(key=lambda m: -m.distance_traveled)
             mobs.remove(m)
             info_panel.update(breed)
         else:

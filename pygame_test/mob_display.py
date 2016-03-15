@@ -33,12 +33,13 @@ class MobInfo:
 	HEIGHT = 80
 	WIDTH = 90
 	STATS = ["HP", "SP", "ND", "MD", "FD"]
-	def __init__(self, loc, mob_array, mob_color):
+	def __init__(self, loc, mob_array, mob_color, dist):
 		if not MobInfo.font:
 			MobInfo.font = pygame.font.SysFont("monospace", 16)
 		self.mob_array = [random.random() for r in range(5)]
 		self.x,self.y = loc
 		self.mob_color = mob_color
+		self.mob_dist = dist
 		self.stat_bars = []
 		x,y = (30,5)
 		for m in self.mob_array:
@@ -54,6 +55,8 @@ class MobInfo:
 			screen.blit(label, location)
 			st.draw(screen)
 		pygame.draw.circle(screen, self.mob_color, (self.x + 75, self.y + self.HEIGHT/2), 10)
+		label = MobInfo.font.render(str(self.mob_dist), 1, (0,0,0))
+		screen.blit(label, (self.x + 70, self.y + self.HEIGHT/2 + 20))
 
 class MobInfoPanel:
 	def __init__(self, loc):
@@ -63,7 +66,7 @@ class MobInfoPanel:
 	def update (self, moblist):
 		self.mob_panels = []
 		for i,m in enumerate(moblist):
-			self.mob_panels.append(MobInfo((self.x, i * MobInfo.HEIGHT), [], (255,0,0)))
+			self.mob_panels.append(MobInfo((self.x, i * MobInfo.HEIGHT), [], (255,0,0), m.distance_traveled))
 
 	def draw (self, screen):
 		for m in self.mob_panels:
