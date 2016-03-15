@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from damage_indicator import *
+from mob_display import *
 
 class Mob:
     RAD = 10
@@ -13,6 +14,8 @@ class Mob:
         self.speed = speed
         self.distance_traveled = 0
         self.HP = HP
+        self.max_health = HP
+        self.hp_bar = HealthBar(self)
 
         self.damage_indicators = []
 
@@ -42,6 +45,8 @@ class Mob:
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), Mob.RAD)
+        self.hp_bar.update(self)
+        self.hp_bar.draw(screen)
         self.damage_indicators = [d for d in self.damage_indicators if d.draw(screen, self)]
 
     def get_hurt(self, damage, type):
