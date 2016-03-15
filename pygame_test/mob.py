@@ -1,5 +1,6 @@
 import pygame
 import numpy as np
+from damage_indicator import *
 
 class Mob:
     RAD = 10
@@ -12,6 +13,8 @@ class Mob:
         self.speed = speed
         self.distance_traveled = 0
         self.HP = HP
+
+        self.damage_indicators = []
 
         print ("created mob")
 
@@ -39,5 +42,11 @@ class Mob:
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), Mob.RAD)
+        self.damage_indicators = [d for d in self.damage_indicators if d.draw(screen, self)]
+
+    def get_hurt(self, damage, type):
+        self.HP -= damage
+        self.damage_indicators.append(DamageIndicator(damage))
+
 
 

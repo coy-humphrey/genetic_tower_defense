@@ -43,9 +43,9 @@ class Tower:
 
     def attack(self, moblist):
         if pygame.time.get_ticks() - self.last_attacked < self.delay: return
-        self.last_attacked = pygame.time.get_ticks()
         target = self.get_target(moblist)
         if target == None: return
+        self.last_attacked = pygame.time.get_ticks()
         self.deal_damage(target, moblist)
 
     def deal_damage(self, target, moblist):
@@ -53,10 +53,12 @@ class Tower:
         splash_mobs = mobs_in_area((target.x,target.y), self.aoe_range, moblist)
         if target in splash_mobs: splash_mobs.remove(target)
         self.deal_aoe_damage (splash_mobs)
+        target.get_hurt(self.damage, self.damage_type)
 
     def deal_aoe_damage(self, mobs):
         for m in mobs:
             m.color = (255,0,255)
+            m.get_hurt(self.aoe_damage, self.damage_type)
 
     def draw(self, screen):
         pygame.draw.circle(screen, Tower.RED,(int(self.x),int(self.y)), self.radius, 1)
