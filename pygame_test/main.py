@@ -126,9 +126,6 @@ while not done:
         else:
             m.draw(screen)
 
-    bar = StatBar(RED, .5, (100,100), 30, 10 )
-    bar.draw(screen)
- 
     # Limit to 60 frames per second
     clock.tick(60)
  
