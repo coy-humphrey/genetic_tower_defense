@@ -1,5 +1,7 @@
 import pygame
 from grid import *
+from mob import *
+import random
 
 class StatBar:
 	def __init__(self, color, value, pos, width, height):
@@ -27,5 +29,42 @@ class HealthBar (StatBar):
 
 class MobInfo:
 	font = None
-	COLOR = (0,0,0)
-	def __init__(self, mob_array):
+	FONTCOLOR = (0,0,0)
+	HEIGHT = 80
+	WIDTH = 90
+	STATS = ["HP", "SP", "ND", "MD", "FD"]
+	def __init__(self, loc, mob_array, mob_color):
+		if not MobInfo.font:
+			MobInfo.font = pygame.font.SysFont("monospace", 16)
+		self.mob_array = [random.random() for r in range(5)]
+		self.x,self.y = loc
+		self.mob_color = mob_color
+		self.stat_bars = []
+		x,y = (30,5)
+		for m in self.mob_array:
+			self.stat_bars.append(StatBar((255,0,0), m, (self.x + x, self.y + y), 28, 10))
+			y += 15
+
+	def draw(self, screen):
+		pygame.draw.rect(screen, (0,0,0), (self.x, self.y, MobInfo.WIDTH, MobInfo.HEIGHT))
+		pygame.draw.rect(screen, (255,255,255), (self.x + 1, self.y + 1, MobInfo.WIDTH - 1, MobInfo.HEIGHT - 1))
+		for i,st in enumerate(self.stat_bars):
+			label = MobInfo.font.render(MobInfo.STATS[i], 1, MobInfo.FONTCOLOR)
+			location = (st.x - 28, st.y - 3)
+			screen.blit(label, location)
+			st.draw(screen)
+		pygame.draw.circle(screen, self.mob_color, (self.x + 75, self.y + self.HEIGHT/2), 10)
+
+class MobInfoPanel:
+	def __init__(self, loc):
+		self.x, self.y = loc
+		self.mob_panels = None
+
+	def update (self, moblist):
+		self.mob_panels = []
+		for i,m in enumerate(moblist):
+			self.mob_panels.append(MobInfo((self.x, i * MobInfo.HEIGHT), [], (255,0,0)))
+
+	def draw (self, screen):
+		for m in self.mob_panels:
+			m.draw(screen)

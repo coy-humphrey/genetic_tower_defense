@@ -38,7 +38,7 @@ def draw_path(screen, path):
 pygame.init()
  
 # Set the HEIGHT and WIDTH of the screen
-WINDOW_SIZE = [800, 800]
+WINDOW_SIZE = [890, 800]
 screen = pygame.display.set_mode(WINDOW_SIZE)
  
 # Set title of screen
@@ -125,6 +125,10 @@ while not done:
             mobs.remove(m)
         else:
             m.draw(screen)
+
+    for i in range(10):
+        mi = MobInfo((800, i * 80), [], RED)
+        mi.draw(screen)
 
     # Limit to 60 frames per second
     clock.tick(60)
