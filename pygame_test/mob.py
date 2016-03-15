@@ -5,6 +5,11 @@ from mob_display import *
 
 class Mob:
     RAD = 10
+    SPEED = 0
+    HP = 1
+    DEFENSE = 2
+    FIREDEFENSE = 3
+    MAGICDEFENSE = 4
 
     def __init__(self, start, color, path, statArray):
         self.statArray = statArray
@@ -14,11 +19,15 @@ class Mob:
         self.curr_dest = self.path[0]
         self.distance_traveled = 0
 
-        self.speed = statArray[0]
-        self.HP = statArray[1]
-        self.defense = statArray[2]
-        self.fireDefense = statArray[3]
-        self.max_health = self.HP
+        self.speed = 0
+        self.hp = 0
+        self.defense = 0
+        self.fireDefense = 0
+        self.magicDefense = 0
+
+        self.statsFromArray(statArray)
+
+        self.max_health = self.hp
         
         self.hp_bar = HealthBar(self)
         self.damage_indicators = []
@@ -54,8 +63,15 @@ class Mob:
         self.damage_indicators = [d for d in self.damage_indicators if d.draw(screen, self)]
 
     def get_hurt(self, damage, type):
-        self.HP -= damage
+        self.hp -= damage
         self.damage_indicators.append(DamageIndicator(damage))
 
+    def is_dead(self):
+        return self.hp <= 0
 
-
+    def statsFromArray(self,a):
+        self.speed = 1 + 5 * a[Mob.SPEED]
+        self.hp = 5 + 10 * a[Mob.HP]
+        self.defense = 5 * a[Mob.DEFENSE]
+        self.fireDefense = 5 * a[Mob.FIREDEFENSE]
+        self.magicDefense = 5 * a[Mob.MAGICDEFENSE]
