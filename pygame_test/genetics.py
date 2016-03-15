@@ -15,3 +15,6 @@ def normalize (a):
 
 def fitness(m):
 	return m.distance_traveled
+
+def get_n_winners(breedlist, n):
+	sorted(breedlist, key=fitness, reverse=True)[:n]
