@@ -2,6 +2,7 @@ import pygame
 import random
 from mob import *
 import genetics
+import copy
 
 class Wave:
     def __init__(self, waveSize, mob_start, mob_path, breed):
@@ -32,3 +33,9 @@ class Wave:
 
         self.mob_list = tmplist + [Mob(mob_start, (255,0,0), mob_path, [random.random() for i in range(5)]) for j in range(waveSize - len(tmplist))]
         random.shuffle(self.mob_list)
+
+        # choices = self.mob_list[:(waveSize/5)]
+        # self.mob_list = []
+        # for c in choices:
+        #     for i in range(5):
+        #         self.mob_list.append(copy.deepcopy(c))
