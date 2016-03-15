@@ -68,7 +68,7 @@ towers = []
 breed = []
 curr_cell = grid.get_cell(0,0)
 info_panel = MobInfoPanel((800,0))
-wave = Wave(100,grid.start[0], path, breed)
+wave = Wave(30,grid.start[0], path, breed)
 
 # -------- Main Program Loop -----------
 while not done:

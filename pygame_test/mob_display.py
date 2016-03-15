@@ -1,6 +1,7 @@
 import pygame
 from grid import *
 from mob import *
+import genetics
 import random
 
 class StatBar:
@@ -66,7 +67,7 @@ class MobInfoPanel:
 	def update (self, moblist):
 		self.mob_panels = []
 		for i,m in enumerate(moblist):
-			self.mob_panels.append(MobInfo((self.x, i * MobInfo.HEIGHT), m.statArray, (255,0,0), int(m.distance_traveled)))
+			self.mob_panels.append(MobInfo((self.x, i * MobInfo.HEIGHT), m.statArray, (255,0,0), int(genetics.fitness(m))))
 
 	def draw (self, screen):
 		for m in self.mob_panels:

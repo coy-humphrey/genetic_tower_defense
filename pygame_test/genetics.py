@@ -12,3 +12,6 @@ def mutate (array1):
 
 def normalize (a):
 	return [x / float(sum(a)) for x in a]
+
+def fitness(m):
+	return m.distance_traveled
