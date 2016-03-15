@@ -11,5 +11,4 @@ def mutate (array1):
 	return a
 
 def normalize (a):
-	magnitude = math.sqrt (sum ([x**2 for x in a]))
-	return [x / magnitude for x in a]
+	return [x / float(sum(a)) for x in a]

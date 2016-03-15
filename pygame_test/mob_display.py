@@ -21,22 +21,22 @@ class HealthBar (StatBar):
 		self.height = 7
 		self.color = (255,0,0)
 		self.x, self.y = (mob.x - mob.RAD, mob.y - mob.RAD)
-		self.value = (mob.HP / float(mob.max_health))
+		self.value = (mob.hp / float(mob.max_health))
 
 	def update(self, mob):
 		self.x, self.y = (mob.x- mob.RAD, mob.y - mob.RAD)
-		self.value = (mob.HP / float(mob.max_health))
+		self.value = (mob.hp / float(mob.max_health))
 
 class MobInfo:
 	font = None
 	FONTCOLOR = (0,0,0)
 	HEIGHT = 80
 	WIDTH = 90
-	STATS = ["HP", "SP", "ND", "MD", "FD"]
+	STATS = ["SP", "HP", "ND", "FD", "MD"]
 	def __init__(self, loc, mob_array, mob_color, dist):
 		if not MobInfo.font:
 			MobInfo.font = pygame.font.SysFont("monospace", 16)
-		self.mob_array = [random.random() for r in range(5)]
+		self.mob_array = mob_array
 		self.x,self.y = loc
 		self.mob_color = mob_color
 		self.mob_dist = dist
@@ -66,7 +66,7 @@ class MobInfoPanel:
 	def update (self, moblist):
 		self.mob_panels = []
 		for i,m in enumerate(moblist):
-			self.mob_panels.append(MobInfo((self.x, i * MobInfo.HEIGHT), [], (255,0,0), m.distance_traveled))
+			self.mob_panels.append(MobInfo((self.x, i * MobInfo.HEIGHT), m.statArray, (255,0,0), m.distance_traveled))
 
 	def draw (self, screen):
 		for m in self.mob_panels:

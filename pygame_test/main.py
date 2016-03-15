@@ -7,7 +7,7 @@ import random
 from tower import *
 from operator import *
 from mob_display import *
-import bisect
+import genetics
  
 # Some code borrowed from:
 # http://programarcadegames.com/index.php?chapter=array_backed_grids
@@ -104,7 +104,7 @@ while not done:
                 mob_start = random.choice(grid.start)
                 mob_end = random.choice(grid.end)
                 mob_path = get_shortest_path(mob_start, mob_end)
-            statArray = [2, 10, 5, 5]
+            statArray = genetics.normalize([random.random() for i in range(5)])
             m = Mob(mob_start, RED, mob_path, statArray)
             mobs.append(m)
 
@@ -123,9 +123,9 @@ while not done:
         t.draw(screen)
 
     for m in mobs:
-        if not m.move() or m.HP <= 0:
+        if not m.move() or m.is_dead():
             breed.append(m)
-            breed.sort(key=lambda m: -m.distance_traveled)
+            breed.sort(key=lambda m: m.distance_traveled, reverse=True)
             mobs.remove(m)
             info_panel.update(breed)
         else:
