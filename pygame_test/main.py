@@ -8,6 +8,7 @@ from tower import *
 from operator import *
 from mob_display import *
 import genetics
+from wave import *
  
 # Some code borrowed from:
 # http://programarcadegames.com/index.php?chapter=array_backed_grids
@@ -42,7 +43,7 @@ def draw_path(screen, path):
 pygame.init()
  
 # Set the HEIGHT and WIDTH of the screen
-WINDOW_SIZE = [890, 800]
+WINDOW_SIZE = [950, 800]
 screen = pygame.display.set_mode(WINDOW_SIZE)
  
 # Set title of screen
@@ -67,6 +68,7 @@ towers = []
 breed = []
 curr_cell = grid.get_cell(0,0)
 info_panel = MobInfoPanel((800,0))
+wave = Wave(100,grid.start[0], path, breed)
 
 # -------- Main Program Loop -----------
 while not done:
@@ -110,7 +112,9 @@ while not done:
 
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_a:
             tower_type = (tower_type + 1) % len(TOWERS)
- 
+
+    wave.step(mobs)
+
     # Set the screen background
     screen.fill(BLACK)
  
@@ -125,7 +129,7 @@ while not done:
     for m in mobs:
         if not m.move() or m.is_dead():
             breed.append(m)
-            breed.sort(key=lambda m: m.distance_traveled, reverse=True)
+            breed.sort(key=lambda m: m.distance_traveled, reverse = True)
             mobs.remove(m)
             info_panel.update(breed)
         else:

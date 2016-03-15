@@ -2,6 +2,7 @@ import pygame
 import numpy as np
 from damage_indicator import *
 from mob_display import *
+import genetics
 
 class Mob:
     RAD = 10
@@ -12,7 +13,7 @@ class Mob:
     MAGICDEFENSE = 4
 
     def __init__(self, start, color, path, statArray):
-        self.statArray = statArray
+        self.statArray = genetics.normalize(statArray)
         self.x, self.y = start.get_center()
         self.color = color
         self.path = [x.get_center() for x in path[1:]]
@@ -25,7 +26,7 @@ class Mob:
         self.fireDefense = 0
         self.magicDefense = 0
 
-        self.statsFromArray(statArray)
+        self.statsFromArray()
 
         self.max_health = self.hp
         
@@ -42,18 +43,23 @@ class Mob:
             self.path.pop(0)
             self.curr_dest = self.path[0]
 
+        dx = 0
+        dy = 0
+
         if a > self.x:
-            self.x += min(self.speed, a - self.x)
-            self.distance_traveled += min(self.speed, a - self.x)
+            dx = min(self.speed, a - self.x)
+            self.x += dx
         elif a < self.x:
-            self.x -= min(self.speed, self.x - a)
-            self.distance_traveled += min(self.speed, self.x - a)
+            dx = min(self.speed, self.x - a)
+            self.x -= dx
         if b > self.y:
-            self.y += min(self.speed, b - self.y)
-            self.distance_traveled += min(self.speed, b - self.y)
+            dy = min(self.speed, b - self.y)
+            self.y += dy
         elif b < self.y:
-            self.y -= min(self.speed, self.y - b)
-            self.distance_traveled += min(self.speed, self.y - b)
+            dy = min(self.speed, self.y - b)
+            self.y -= dy
+        
+        self.distance_traveled += (dx + dy)
         return 1
 
     def draw(self, screen):
@@ -69,7 +75,8 @@ class Mob:
     def is_dead(self):
         return self.hp <= 0
 
-    def statsFromArray(self,a):
+    def statsFromArray(self):
+        a = self.statArray
         self.speed = 1 + 5 * a[Mob.SPEED]
         self.hp = 5 + 10 * a[Mob.HP]
         self.defense = 5 * a[Mob.DEFENSE]
