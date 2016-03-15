@@ -42,7 +42,7 @@ WINDOW_SIZE = [890, 800]
 screen = pygame.display.set_mode(WINDOW_SIZE)
  
 # Set title of screen
-pygame.display.set_caption("Array Backed Grid")
+pygame.display.set_caption("Genetic Tower Defense")
  
 # Loop until the user clicks the close button.
 done = False
@@ -62,6 +62,7 @@ mobs = []
 towers = []
 breed = []
 curr_cell = grid.get_cell(0,0)
+info_panel = MobInfoPanel((800,0))
 
 # -------- Main Program Loop -----------
 while not done:
@@ -121,15 +122,15 @@ while not done:
         if not m.move():
             breed.append(m)
             mobs.remove(m)
+            info_panel.update(breed)
         if m.HP <= 0:
             breed.append(m)
             mobs.remove(m)
+            info_panel.update(breed)
         else:
             m.draw(screen)
 
-    for i in range(10):
-        mi = MobInfo((800, i * 80), [], RED)
-        mi.draw(screen)
+    info_panel.draw(screen)
 
     # Limit to 60 frames per second
     clock.tick(60)

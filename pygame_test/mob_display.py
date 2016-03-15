@@ -58,7 +58,7 @@ class MobInfo:
 class MobInfoPanel:
 	def __init__(self, loc):
 		self.x, self.y = loc
-		self.mob_panels = None
+		self.mob_panels = []
 
 	def update (self, moblist):
 		self.mob_panels = []
