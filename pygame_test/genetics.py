@@ -14,7 +14,7 @@ def normalize (a):
 	return [x / float(sum(a)) for x in a]
 
 def fitness(m):
-	return m.distance_traveled + 100 * m.attacked
+	return m.distance_traveled + 100 * m.attacked + (m.hp / m.max_health * 500)
 
 def get_n_winners(breedlist, n):
 	return sorted(breedlist, key=fitness, reverse=True)[:n]

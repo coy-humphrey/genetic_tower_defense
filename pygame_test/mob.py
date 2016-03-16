@@ -36,6 +36,7 @@ class Mob:
         self.damage_indicators = []
 
         self.attacked = 0
+        self.survived = 0
 
     def move(self):
         if not self.curr_dest: return 0
@@ -89,7 +90,7 @@ class Mob:
     def statsFromArray(self):
         a = self.statArray
         self.speed = 1 + 5 * a[Mob.SPEED]
-        self.hp = 5 + 20 * a[Mob.HP]
+        self.hp = 10 + 30 * a[Mob.HP]
         self.defense = 15 * a[Mob.DEFENSE]
         self.fireDefense = 15 * a[Mob.FIREDEFENSE]
         self.magicDefense = 15 * a[Mob.MAGICDEFENSE]

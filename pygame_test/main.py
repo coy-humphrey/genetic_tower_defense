@@ -71,11 +71,12 @@ info_panel = MobInfoPanel((800,0))
 wave = Wave(30,grid.start[0], path, breed)
 wave_done = False
 timer = pygame.time.get_ticks()
-wave_delay = 2000
+wave_delay = 10000
 wave_delayed = True
 
 num_survived = 0
 num_survived_new = 0
+round_num = 1
 font = pygame.font.SysFont("monospace", 16)
 
 # -------- Main Program Loop -----------
@@ -135,6 +136,7 @@ while not done:
             info_panel.update(breed)
             breed = []
             wave_done = False
+            round_num += 1
 
     if not wave_delayed or pygame.time.get_ticks() - timer > wave_delay:
         wave_delayed = False
@@ -158,6 +160,7 @@ while not done:
             mobs.remove(m)
             if not m.is_dead():
                 num_survived_new += 1
+                m.survived = True
         else:
             m.draw(screen)
 
@@ -166,6 +169,10 @@ while not done:
     survivor_str = "Survivors Last Round: " + str(num_survived)
     label = font.render(survivor_str, 1, BLACK)
     location = (250, 30)
+    screen.blit(label, location)
+    round_str = "Round: " + str(round_num)
+    label = font.render(round_str, 1, BLACK)
+    location = (250, 60)
     screen.blit(label, location)
 
 
